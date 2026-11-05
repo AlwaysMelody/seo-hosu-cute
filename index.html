@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PERSONNEL APPLICATION — Template Maker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Jua&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Song+Myung&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#202a35;--muted:#687482;--line:#cbd2d9;--accent:#243c56;--paper:#fff;--bg:#e9edf1;--soft:#f3f5f7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,"Noto Sans KR",sans-serif}
+.topbar{height:58px;background:#172331;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 22px;gap:12px}
+.brand{font-size:13px;letter-spacing:2px;font-weight:700}.brand small{display:block;font-size:9px;letter-spacing:1.5px;color:#b8c2cc;margin-top:3px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+button,.filebtn{border:1px solid #aeb9c4;background:#fff;color:#243342;padding:9px 12px;font-size:12px;cursor:pointer;border-radius:3px}
+button.primary{background:#243c56;color:#fff;border-color:#243c56}
+button:hover,.filebtn:hover{filter:brightness(.95)}
+.layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:22px;max-width:1500px;margin:22px auto;padding:0 20px;align-items:start}
+.panel{background:#fff;border:1px solid #d8dee4;padding:18px;position:sticky;top:16px;max-height:calc(100vh - 90px);overflow:auto}
+.panel h2{font-size:13px;letter-spacing:1.5px;margin:0 0 5px}.panel .hint{font-size:11px;color:#7a8590;line-height:1.6;margin:0 0 18px}
+.group{border-top:1px solid #e3e7eb;padding:14px 0}.group h3{font-size:11px;letter-spacing:1px;margin:0 0 10px;color:#425366}
+label{display:block;font-size:11px;color:#64717d;margin:9px 0 5px}
+input[type=text],input[type=color],select,textarea{width:100%;border:1px solid #d5dce2;background:#fbfcfd;padding:8px;font:12px Arial,"Noto Sans KR",sans-serif;color:#273542;border-radius:2px}
+textarea{min-height:65px;resize:vertical}
+input[type=color]{height:34px;padding:3px}
+.fieldrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fieldlist{display:flex;flex-direction:column;gap:7px}
+.fielditem{border:1px solid #e0e5e9;padding:8px;background:#fafbfc}
+.fielditem input{margin-bottom:5px}
+.fielditem .mini{display:flex;gap:5px}.fielditem .mini button{padding:5px 8px;font-size:10px}
+.preview-wrap{overflow:auto;padding:8px 0 30px}
+.paper{width:794px;min-height:1123px;background:var(--paper);margin:0 auto;padding:54px 58px 42px;box-shadow:0 8px 28px #25344320;position:relative;color:var(--ink)}
+.doc-top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid var(--accent);padding-bottom:17px}
+.kicker{font-size:9px;letter-spacing:2.8px;color:var(--muted);font-weight:bold}
+h1{font-size:30px;letter-spacing:1px;margin:8px 0 3px;font-weight:800}
+.subtitle{font-size:10px;letter-spacing:2px;color:#64717d}
+.doc-meta{text-align:right;font-size:9px;line-height:1.9;color:#687482}
+.stamp{display:inline-block;border:1px solid #9aa7b3;color:#536477;padding:4px 8px;letter-spacing:1.5px;font-size:9px;margin-top:7px}
+.section{margin-top:23px}
+.section-title{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--accent);padding-bottom:7px;margin-bottom:12px}
+.section-title b{font-size:12px;letter-spacing:1.5px}.section-title span{font-size:9px;color:#7a8792;letter-spacing:1px}
+.profile-grid{display:grid;grid-template-columns:var(--photo-width,145px) 1fr;gap:17px;align-items:start}
+.photo{width:var(--photo-width,145px);height:var(--photo-height,174px);border:1px solid #bfc8d0;background:#f1f3f5;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.photo img{width:100%;height:100%;object-fit:cover;display:none}
+.photo .photo-placeholder{text-align:center;color:#84909b;font-size:10px;line-height:1.8;letter-spacing:1px}
+.info-table{width:100%;border-collapse:collapse;font-size:11px}
+.info-table th,.info-table td{border:1px solid #d5dbe0;padding:9px 10px;text-align:left;vertical-align:middle}
+.info-table th{background:#f2f4f6;color:#536170;width:92px;font-size:10px;font-weight:700}
+.info-table td{min-height:30px}
+.full-table{width:100%;border-collapse:collapse;font-size:11px}
+.full-table th,.full-table td{border:1px solid #d5dbe0;padding:9px 10px;text-align:left;vertical-align:top}
+.full-table th{background:#f2f4f6;color:#536170;font-size:10px;width:115px}
+.content-box{border:1px solid #d5dbe0;min-height:72px;padding:11px;font-size:11px;line-height:1.8;white-space:pre-wrap}
+.evaluation{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.eval-cell{border:1px solid #d5dbe0;padding:9px}
+.eval-cell small{display:block;color:#71808d;font-size:9px;letter-spacing:1px;margin-bottom:6px}
+.eval-cell strong{font-size:12px;font-weight:600}
+.bottom-note{border-top:1px solid #aeb8c1;margin-top:30px;padding-top:10px;display:flex;justify-content:space-between;color:#7c8791;font-size:8px;letter-spacing:1px}.creator-credit{font-size:7px;letter-spacing:.5px;opacity:.72;white-space:nowrap}
+.editable{outline:none;min-width:10px}
+.editable:focus{background:#fffbe8}
+[contenteditable=true]:empty:before{content:attr(data-placeholder);color:#aab3bb}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.panel{position:relative;max-height:none}.paper{transform-origin:top left}.preview-wrap{padding:0 0 20px}}
+
+/* V2 visual polish + elemental document skins */
+.paper{border:1px solid #e3e6e9;overflow:hidden}
+.paper:after{content:"";position:absolute;inset:12px;pointer-events:none;border:1px solid #edf0f2;z-index:0}
+.paper>*{position:relative;z-index:1}
+.doc-top{position:relative}
+.doc-top:after{content:"";position:absolute;right:0;bottom:-3px;width:86px;height:3px;background:var(--accent)}
+.section-title b{font-size:11px}
+.section-title:before{content:"";width:4px;height:13px;background:var(--accent);display:inline-block}
+.photo{background:linear-gradient(145deg,#f5f6f7,#e9edf0);box-shadow:inset 0 0 0 4px #fff}
+.info-table th,.full-table th{background:#f4f6f8}
+.content-box{background:linear-gradient(180deg,#fff,#fcfcfd)}
+.stamp{font-weight:700}
+.paper.theme-fire{background:
+ radial-gradient(ellipse at 0% 0%,rgba(115,52,25,.17),transparent 17%),
+ radial-gradient(ellipse at 100% 100%,rgba(133,59,24,.13),transparent 18%),
+ linear-gradient(135deg,#fffdfa,#fff 48%,#fffaf6)}
+.paper.theme-fire:after{border-color:#e7d6c8}
+.paper.theme-fire .doc-top{border-color:#8c452c}
+.paper.theme-fire .doc-top:before{content:"";position:absolute;left:-58px;top:-54px;width:155px;height:155px;background:radial-gradient(ellipse,rgba(87,47,31,.18),rgba(130,66,34,.10) 35%,transparent 70%);filter:blur(8px);pointer-events:none}
+.paper.theme-water{background:radial-gradient(ellipse at 100% 0%,rgba(77,150,178,.13),transparent 25%),radial-gradient(ellipse at 0% 100%,rgba(77,150,178,.10),transparent 22%),#fbfeff}
+.paper.theme-water:after{border-color:#d6e7ec}
+.paper.theme-water .doc-top{border-color:#39778e}
+.paper.theme-ice{background:linear-gradient(135deg,rgba(207,231,243,.22),transparent 30%),linear-gradient(315deg,rgba(207,231,243,.18),transparent 28%),#fcfeff}
+.paper.theme-ice:after{border-color:#d5e5ed}
+.paper.theme-ice .doc-top{border-color:#648ba5}
+.paper.theme-lightning{background:radial-gradient(ellipse at 100% 0%,rgba(217,192,104,.16),transparent 25%),#fffefa}
+.paper.theme-lightning:after{border-color:#e8dfbd}
+.paper.theme-lightning .doc-top{border-color:#8d7a3e}
+.paper.theme-nature{background:radial-gradient(ellipse at 0% 0%,rgba(103,143,103,.14),transparent 23%),radial-gradient(ellipse at 100% 100%,rgba(103,143,103,.10),transparent 20%),#fdfffc}
+.paper.theme-nature:after{border-color:#dce8d8}
+.paper.theme-nature .doc-top{border-color:#587b59}
+.paper.theme-dark{background:linear-gradient(135deg,#fbfbfc,#f5f6f8)}
+.paper.theme-dark:after{border-color:#d7d9df}
+.paper.theme-dark .doc-top{border-color:#3c4652}
+.paper.theme-arcane{background:radial-gradient(ellipse at 100% 0%,rgba(137,111,168,.15),transparent 24%),#fdfbff}
+.paper.theme-arcane:after{border-color:#e4dced}
+.paper.theme-arcane .doc-top{border-color:#705a8a}
+.paper.theme-fire .stamp{border-color:#b77b5c;color:#8c452c}
+.paper.theme-water .stamp{border-color:#80aebe;color:#39778e}
+.paper.theme-ice .stamp{border-color:#9bb8c9;color:#648ba5}
+.paper.theme-lightning .stamp{border-color:#b7a66c;color:#806d32}
+.paper.theme-nature .stamp{border-color:#9db69a;color:#587b59}
+.paper.theme-arcane .stamp{border-color:#b6a4c8;color:#705a8a}
+
+@media print{body{background:#fff}.topbar,.panel{display:none!important}.layout{display:block;margin:0;padding:0}.preview-wrap{padding:0;overflow:visible}.paper{box-shadow:none;margin:0;width:794px;min-height:1123px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+ <div class="brand">PERSONNEL OFFICE <small>DOCUMENT TEMPLATE STUDIO</small></div>
+ <div class="actions">
+  <button onclick="window.print()">인쇄 / PDF</button>
+  <button onclick="saveProject()">작업 파일 저장</button>
+  <label class="filebtn">작업 파일 불러오기<input id="loadProject" type="file" accept=".json" hidden></label>
+  <button class="primary" onclick="downloadPNG()">PNG 저장</button>
+ </div>
+</header>
+<div class="layout">
+<aside class="panel">
+ <h2>EDIT DOCUMENT</h2><p class="hint">왼쪽에서 내용을 수정하면 오른쪽 지원서에 바로 반영됩니다. 최종 문서에는 편집 도구가 표시되지 않습니다.</p>
+ <div class="group">
+  <h3>DOCUMENT / 문서 설정</h3>
+  <label>문서 제목</label><input type="text" data-target="docTitle" value="PERSONNEL APPLICATION">
+  <label>부제</label><input type="text" data-target="subtitle" value="PERSONNEL REGISTRATION & REVIEW FORM">
+  <div class="fieldrow"><div><label>접수 번호</label><input type="text" data-target="serial" value="PA-2026-001"></div><div><label>접수일</label><input type="text" data-target="date" value="2026. 11. 05"></div></div>
+  <label>문서 상태</label><input type="text" data-target="status" value="UNDER REVIEW">
+  <label>포인트 색상</label><input type="color" id="accent" value="#243c56">
+  <label>속성 테마</label>
+  <select id="elementTheme">
+   <option value="neutral">기본 · 클래식 서류</option><option value="fire">불 · 그을린 문서</option>
+   <option value="water">물 · 잔잔한 물결</option><option value="ice">얼음 · 서리와 유리</option>
+   <option value="lightning">번개 · 금빛 전류</option><option value="nature">자연 · 식물과 이끼</option>
+   <option value="dark">어둠 · 차분한 다크</option><option value="arcane">마력 · 신비로운 보랏빛</option>
+  </select>
+  <label>문서 글씨체</label>
+  <select id="fontChoice">
+   <option value="Noto Sans KR">Noto Sans KR · 기본 고딕</option>
+   <option value="IBM Plex Sans KR">IBM Plex Sans KR · 단정한 기업형</option>
+   <option value="Gowun Dodum">고운돋움 · 부드러운 고딕</option>
+   <option value="Do Hyeon">도현체 · 굵고 또렷한 제목</option>
+   <option value="Jua">주아체 · 둥글고 친근한</option>
+   <option value="Black Han Sans">검은고딕 · 강한 제목</option>
+   <option value="Gowun Batang">고운바탕 · 차분한 명조</option>
+   <option value="Nanum Myeongjo">나눔명조 · 클래식 명조</option>
+   <option value="Song Myung">송명체 · 문서형 명조</option>
+  </select>
+  <p class="hint">무료 웹폰트는 인터넷 연결 시 적용됩니다. 일부 폰트는 제목과 본문에 모두 적용됩니다.</p>
+ </div>
+ <div class="group">
+  <h3>PHOTO / 증명사진</h3>
+  <label>사진 업로드</label><input type="file" id="photoUpload" accept="image/*">
+  <label>사진 표시 방식</label><select id="photoFit"><option value="cover">영역 채우기</option><option value="contain">전체 표시</option></select>
+  <div class="fieldrow">
+   <div><label>사진 너비 (px)</label><input type="number" id="photoWidth" min="60" max="320" value="145"></div>
+   <div><label>사진 높이 (px)</label><input type="number" id="photoHeight" min="60" max="420" value="174"></div>
+  </div>
+  <label>PNG 저장 배율</label><select id="exportScale"><option value="2">2배 · 기본</option><option value="3" selected>3배 · 고화질</option><option value="4">4배 · 최고화질</option></select>
+  <p class="hint">사진 너비·높이는 미리보기와 저장 결과에 함께 적용됩니다. 원본 사진 해상도가 낮으면 크게 확대할 때 선명도에 한계가 있을 수 있어요.</p>
+ </div>
+ <div class="group">
+  <h3>PERSONAL INFO / 인적 사항</h3>
+  <div class="fieldlist" id="personalFields"></div>
+  <button onclick="addField('personalFields')">+ 항목 추가</button>
+ </div>
+ <div class="group">
+  <h3>AFFILIATION / 소속 및 직무</h3>
+  <div class="fieldlist" id="affiliationFields"></div>
+  <button onclick="addField('affiliationFields')">+ 항목 추가</button>
+ </div>
+ <div class="group">
+  <h3>CAREER / 경력 및 이력</h3>
+  <label>경력 및 활동 내용</label><textarea data-target="career">2022 — 현재    관련 분야 프로젝트 및 활동 이력
+2020 — 2022    이전 소속 / 주요 담당 업무</textarea>
+ </div>
+ <div class="group">
+  <h3>SKILL / 능력 및 전문 분야</h3>
+  <label>능력 · 특기 · 전문 분야</label><textarea data-target="skills">전문 분야 또는 주요 능력을 기재해 주세요.
+보유 기술 / 자격 / 특이 능력 등</textarea>
+ </div>
+ <div class="group">
+  <h3>EVALUATION / 내부 평가</h3>
+  <div class="fieldrow"><div><label>업무 적합도</label><input type="text" data-target="eval1" value="HIGH"></div><div><label>위험 등급</label><input type="text" data-target="eval2" value="LEVEL 02"></div></div>
+  <label>조직 적응도</label><input type="text" data-target="eval3" value="GOOD">
+  <label>담당자 평가</label><textarea data-target="evaluation">기재된 정보 및 면담 결과를 바탕으로 종합 검토 예정.</textarea>
+ </div>
+ <div class="group">
+  <h3>INTRODUCTION / 자기소개</h3>
+  <label>자기소개 및 기타 사항</label><textarea data-target="intro">지원 동기, 성향, 가치관 또는 추가로 전달하고 싶은 내용을 자유롭게 작성해 주세요.</textarea>
+ </div>
+ <div class="group">
+  <h3>FOOTER / 하단 정보</h3>
+  <label>기관명 / 문서 안내</label><input type="text" data-target="footerOrg" value="HUMAN RESOURCES DIVISION · PERSONNEL OFFICE">
+  <label>보안 문구</label><input type="text" data-target="confidential" value="CONFIDENTIAL · FOR INTERNAL REVIEW ONLY">
+ </div>
+</aside>
+
+<main class="preview-wrap">
+<article class="paper" id="paper">
+ <div class="doc-top">
+  <div><div class="kicker">HUMAN RESOURCES DIVISION</div><h1 id="v-docTitle">PERSONNEL APPLICATION</h1><div class="subtitle" id="v-subtitle">PERSONNEL REGISTRATION &amp; REVIEW FORM</div></div>
+  <div class="doc-meta">DOCUMENT NO. <b id="v-serial">PA-2026-001</b><br>DATE <b id="v-date">2026. 11. 05</b><br><div class="stamp" id="v-status">UNDER REVIEW</div></div>
+ </div>
+ <section class="section">
+  <div class="section-title"><b>01. PERSONAL INFORMATION</b><span>인적 사항</span></div>
+  <div class="profile-grid">
+   <div class="photo"><img id="photoPreview"><div class="photo-placeholder" id="photoPlaceholder">IDENTIFICATION<br>PHOTOGRAPH</div></div>
+   <table class="info-table"><tbody id="v-personal"></tbody></table>
+  </div>
+ </section>
+ <section class="section">
+  <div class="section-title"><b>02. AFFILIATION &amp; POSITION</b><span>소속 및 지원 정보</span></div>
+  <table class="full-table"><tbody id="v-affiliation"></tbody></table>
+ </section>
+ <section class="section">
+  <div class="section-title"><b>03. CAREER RECORD</b><span>경력 및 활동 이력</span></div>
+  <div class="content-box" id="v-career"></div>
+ </section>
+ <section class="section">
+  <div class="section-title"><b>04. SKILLS &amp; QUALIFICATIONS</b><span>능력 및 전문 분야</span></div>
+  <div class="content-box" id="v-skills"></div>
+ </section>
+ <section class="section">
+  <div class="section-title"><b>05. INTERNAL EVALUATION</b><span>내부 검토 · 인사 평가</span></div>
+  <div class="evaluation">
+   <div class="eval-cell"><small>JOB SUITABILITY</small><strong id="v-eval1">HIGH</strong></div>
+   <div class="eval-cell"><small>RISK CLASS</small><strong id="v-eval2">LEVEL 02</strong></div>
+   <div class="eval-cell"><small>ORGANIZATION FIT</small><strong id="v-eval3">GOOD</strong></div>
+  </div>
+  <div class="content-box" style="margin-top:8px;min-height:48px" id="v-evaluation"></div>
+ </section>
+ <section class="section">
+  <div class="section-title"><b>06. PERSONAL STATEMENT</b><span>자기소개 및 기타 사항</span></div>
+  <div class="content-box" id="v-intro"></div>
+ </section>
+ <div class="bottom-note"><span id="v-footerOrg">HUMAN RESOURCES DIVISION · PERSONNEL OFFICE</span><span id="v-confidential">CONFIDENTIAL · FOR INTERNAL REVIEW ONLY</span><span>PAGE 01 / 01</span><span class="creator-credit">@S2nxw_</span></div>
+</article>
+</main>
+</div>
+<script>
+const defaults = {
+ personalFields:[["성명 / NAME","홍 길 동"],["생년월일 / DATE OF BIRTH","2000. 01. 01"],["연령 / AGE","26"],["성별 / GENDER","미기재"],["연락처 / CONTACT","000-0000-0000"],["거주지 / ADDRESS","대한민국"]],
+ affiliationFields:[["소속 / AFFILIATION","제1관리부"],["부서 / DEPARTMENT","특수 인재 관리과"],["지원 직무 / POSITION","전문 인력"],["직급 / RANK","선임 후보"],["등록 코드 / ID CODE","HR-0001"],["활동 구역 / ASSIGNED AREA","미정"]]
+};
+const state = JSON.parse(JSON.stringify(defaults));
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function renderFields(id){
+ const host=document.getElementById(id);host.innerHTML='';
+ state[id].forEach((f,i)=>{
+  const div=document.createElement('div');div.className='fielditem';
+  div.innerHTML=`<input type="text" aria-label="항목명" value="${escapeHTML(f[0])}" placeholder="항목명"><input type="text" aria-label="내용" value="${escapeHTML(f[1])}" placeholder="내용"><div class="mini"><button type="button">위로</button><button type="button">아래로</button><button type="button">삭제</button></div>`;
+  const inputs=div.querySelectorAll('input');inputs[0].oninput=()=>{state[id][i][0]=inputs[0].value;renderPreview()};
+  inputs[1].oninput=()=>{state[id][i][1]=inputs[1].value;renderPreview()};
+  const bs=div.querySelectorAll('button');
+  bs[0].onclick=()=>moveField(id,i,-1);bs[1].onclick=()=>moveField(id,i,1);bs[2].onclick=()=>{state[id].splice(i,1);renderFields(id);renderPreview()};
+  host.appendChild(div);
+ });
+}
+function addField(id){state[id].push(["새 항목","내용을 입력하세요"]);renderFields(id);renderPreview()}
+function moveField(id,i,d){let j=i+d;if(j<0||j>=state[id].length)return;[state[id][i],state[id][j]]=[state[id][j],state[id][i]];renderFields(id);renderPreview()}
+function renderRows(id,target){document.getElementById(target).innerHTML=state[id].map(f=>`<tr><th>${escapeHTML(f[0])}</th><td>${escapeHTML(f[1])}</td></tr>`).join('')}
+function renderPreview(){
+ document.querySelectorAll('[data-target]').forEach(el=>{let target=document.getElementById('v-'+el.dataset.target);if(target)target.textContent=el.value});
+ renderRows('personalFields','v-personal');renderRows('affiliationFields','v-affiliation');
+}
+document.querySelectorAll('[data-target]').forEach(el=>el.addEventListener('input',renderPreview));
+document.getElementById('accent').addEventListener('input',e=>document.documentElement.style.setProperty('--accent',e.target.value));
+document.getElementById('elementTheme').addEventListener('change',e=>{
+ const paper=document.getElementById('paper');
+ paper.classList.remove('theme-fire','theme-water','theme-ice','theme-lightning','theme-nature','theme-dark','theme-arcane');
+ if(e.target.value!=='neutral')paper.classList.add('theme-'+e.target.value);
+});
+document.getElementById('fontChoice').addEventListener('change',e=>{
+ document.getElementById('paper').style.fontFamily='"'+e.target.value+'",sans-serif';
+});
+document.getElementById('photoFit').addEventListener('change',e=>document.getElementById('photoPreview').style.objectFit=e.target.value);
+function updatePhotoSize(){
+ const w=Math.max(60,Math.min(320,Number(document.getElementById('photoWidth').value)||145));
+ const h=Math.max(60,Math.min(420,Number(document.getElementById('photoHeight').value)||174));
+ document.documentElement.style.setProperty('--photo-width',w+'px');
+ document.documentElement.style.setProperty('--photo-height',h+'px');
+ document.getElementById('photoWidth').value=w;
+ document.getElementById('photoHeight').value=h;
+}
+document.getElementById('photoWidth').addEventListener('input',updatePhotoSize);
+document.getElementById('photoHeight').addEventListener('input',updatePhotoSize);
+document.getElementById('exportScale').addEventListener('change',()=>{});
+updatePhotoSize();
+document.getElementById('photoUpload').addEventListener('change',e=>{
+ const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{const img=document.getElementById('photoPreview');img.src=reader.result;img.style.display='block';document.getElementById('photoPlaceholder').style.display='none'};reader.readAsDataURL(file);
+});
+function getData(){
+ const fields={};document.querySelectorAll('[data-target]').forEach(el=>fields[el.dataset.target]=el.value);
+ return {fields,state,accent:document.getElementById('accent').value,theme:document.getElementById('elementTheme').value,font:document.getElementById('fontChoice').value,photo:document.getElementById('photoPreview').src||'',photoFit:document.getElementById('photoFit').value,
+ photoWidth:document.getElementById('photoWidth').value,photoHeight:document.getElementById('photoHeight').value,
+ exportScale:document.getElementById('exportScale').value};
+}
+function applyData(data){
+ Object.entries(data.fields||{}).forEach(([k,v])=>{let el=document.querySelector(`[data-target="${k}"]`);if(el)el.value=v});
+ if(data.state){state.personalFields=data.state.personalFields||[];state.affiliationFields=data.state.affiliationFields||[]}
+ renderFields('personalFields');renderFields('affiliationFields');renderPreview();
+ if(data.accent){document.getElementById('accent').value=data.accent;document.documentElement.style.setProperty('--accent',data.accent)}
+ if(data.photo){let img=document.getElementById('photoPreview');img.src=data.photo;img.style.display='block';document.getElementById('photoPlaceholder').style.display='none'}
+ if(data.photoFit){document.getElementById('photoFit').value=data.photoFit;document.getElementById('photoPreview').style.objectFit=data.photoFit}
+ if(data.photoWidth)document.getElementById('photoWidth').value=data.photoWidth;
+ if(data.photoHeight)document.getElementById('photoHeight').value=data.photoHeight;
+ if(data.exportScale)document.getElementById('exportScale').value=data.exportScale;
+ updatePhotoSize();
+ if(data.theme){document.getElementById('elementTheme').value=data.theme;document.getElementById('elementTheme').dispatchEvent(new Event('change'))}
+ if(data.font){document.getElementById('fontChoice').value=data.font;document.getElementById('fontChoice').dispatchEvent(new Event('change'))}
+}
+function saveProject(){const blob=new Blob([JSON.stringify(getData(),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='personnel-application-project.json';a.click();URL.revokeObjectURL(a.href)}
+document.getElementById('loadProject').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{applyData(JSON.parse(r.result))}catch(err){alert('작업 파일을 읽을 수 없습니다.')}};r.readAsText(f)});
+async function downloadPNG(){
+ const paper=document.getElementById('paper');
+ if(!window.html2canvas){alert('PNG 저장 기능을 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.');return}
+ try{const scale=Number(document.getElementById('exportScale').value)||3;const canvas=await html2canvas(paper,{scale,backgroundColor:'#ffffff',useCORS:true});const a=document.createElement('a');a.download='personnel-application.png';a.href=canvas.toDataURL('image/png');a.click()}catch(e){alert('PNG 저장 중 문제가 발생했습니다. 인쇄/PDF 기능을 이용해 주세요.')}
+}
+renderFields('personalFields');renderFields('affiliationFields');renderPreview();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</body></html>
